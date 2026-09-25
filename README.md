@@ -1,5 +1,7 @@
 # Image Reveal
 
+[![CI](https://github.com/insylogo/image-reveal/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/insylogo/image-reveal/actions/workflows/ci.yml)
+
 Browser extension that reveals image URLs hidden behind CSS backgrounds, transparent overlays, inert wrappers, lazy-load attributes, open shadow DOM, and IIIF tiled viewers (OpenSeadragon / National Archives Catalog).
 
 Works in **Firefox**, **Chrome**, and **Edge**.
