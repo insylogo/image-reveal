@@ -79,59 +79,53 @@ full resolution
 
 ## Full description
 
-AMO supports limited HTML (`<p>`, `<ul>`, `<li>`, `<strong>`, `<a>`, `<br>`). Paste below into **Description**:
+AMO's Description field supports only a limited set of Markdown: **bold**, *italic*, links, abbreviations, blockquotes, code, and lists. Headings and HTML are not supported, so section labels below use bold text. Paste everything inside the block:
 
-```html
-<p><strong>Image Reveal</strong> finds image URLs that websites show on screen but hide from “Save image as” — because the picture lives in a CSS <code>background-image</code>, under a transparent overlay, in lazy-load <code>data-*</code> attributes, or inside a tiled IIIF / OpenSeadragon pan-zoom viewer instead of a normal <code>&lt;img&gt;</code> tag.</p>
+```markdown
+**Ever tried to save a picture and got a blank "Save image as", a blurry thumbnail, or nothing at all?** Image Reveal finds the real image behind what you see, even when the site hides it.
 
-<p>If you have ever tried to download a hero banner, a museum artwork, or a National Archives record and only got a thumbnail — or nothing at all — this extension is built for that.</p>
+Many sites keep their images out of reach: set as page backgrounds, covered by invisible overlays, lazy-loaded, or split into hundreds of tiles inside a zoomable viewer. Image Reveal digs through all of that and hands you the actual file.
 
-<h3>How to use</h3>
-<ul>
-  <li><strong>Right-click</strong> anywhere on the page → <strong>Reveal images here</strong></li>
-  <li>Or click the toolbar icon → <strong>Start element picker</strong> → click the visual you want → <strong>Esc</strong> to cancel</li>
-</ul>
-<p>A results panel lists every unique URL found at that point. For each image you can <strong>Open</strong>, <strong>Copy URL</strong>, or <strong>Download</strong>. Use <strong>Open all</strong> or <strong>Download all</strong> for the full list. Repeated reveals add to the same panel until you close it.</p>
+**How to use**
 
-<h3>What it can reveal</h3>
-<ul>
-  <li>CSS <code>background-image</code>, <code>image-set()</code>, masks, and <code>::before</code> / <code>::after</code> pseudo-elements</li>
-  <li>Images buried under transparent overlays (stack picking at your cursor)</li>
-  <li><code>&lt;img&gt;</code>, <code>&lt;picture&gt;</code>, and largest <code>srcset</code> candidates</li>
-  <li>Lazy-load attributes: <code>data-src</code>, <code>data-background-image</code>, <code>data-bg</code>, and similar</li>
-  <li>CSS variables such as <code>--bg-image</code></li>
-  <li>Open shadow DOM (closed shadow roots are not supported)</li>
-  <li><strong>IIIF</strong> full-resolution URLs from tiled viewers — e.g. National Archives Catalog, Swedish Nationalmuseum, and other OpenSeadragon / IIIF sites</li>
-  <li><strong>Stitch full res</strong> — for large tiled IIIF images, download all tiles and assemble one full-resolution file in the browser</li>
-  <li>Video posters, inline SVG images, blob and data URLs</li>
-</ul>
+1. Right-click anywhere on a page and choose **Reveal images here**
+2. Or click the toolbar icon, choose **Start element picker**, and click the picture you want (press **Esc** to cancel)
+3. A panel lists every image found at that spot. **Open**, **Copy**, or **Download** any of them, or use **Open all** / **Download all**
 
-<h3>Good fits</h3>
-<ul>
-  <li>Archive and museum collection sites with pan-zoom viewers</li>
-  <li>News and marketing sites with CSS hero images</li>
-  <li>Social and gallery layouts with overlay stacks</li>
-  <li>Lazy-loaded galleries and carousels</li>
-</ul>
+Keep revealing and the list keeps growing until you close the panel.
 
-<h3>Limitations</h3>
-<ul>
-  <li>Does not bypass DRM, login walls, or paywalls</li>
-  <li>Canvas / WebGL content without a discoverable URL is not supported</li>
-  <li>Cross-origin iframes and closed shadow DOM are not supported</li>
-  <li>On IIIF sites, wait for the viewer to load tiles before revealing</li>
-  <li>Some hosts require page context (Referer/cookies) to download — the extension handles this when you use Open or Download from the panel</li>
-</ul>
+**Full resolution from zoomable viewers**
 
-<h3>Privacy</h3>
-<p>Runs only when <strong>you</strong> invoke it (context menu or picker). No background scanning. No analytics. No accounts. No data is sent to the developer. Image hosts are contacted only when you choose Open or Download.</p>
-<p>Privacy policy: <a href="https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md">https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md</a></p>
-<p>Source code: <a href="https://github.com/insylogo/image-reveal">https://github.com/insylogo/image-reveal</a> (MIT)</p>
+Museum, archive, and library sites often show artwork in pan-and-zoom viewers made of small tiles. Image Reveal finds the full-size original, and **Stitch full res** downloads every tile and joins them into one high-resolution image, right in your browser. Works with:
+
+- *IIIF* viewers such as the [National Archives Catalog](https://catalog.archives.gov/) and many museum collections
+- *Deep Zoom* viewers built on [OpenSeadragon](https://openseadragon.github.io/)
+
+**What it can find**
+
+- CSS background images, including `image-set()`, masks, and `::before` / `::after` layers
+- Pictures hidden under transparent overlays or unclickable wrappers
+- The largest available version from `srcset` and `<picture>`
+- Lazy-load attributes like `data-src` and `data-bg`
+- Video posters, SVG images, blob and data URLs
+- Content inside open shadow DOM
+
+**Limitations**
+
+- Does not bypass DRM, logins, or paywalls
+- Images drawn directly onto a canvas with no file behind them can't be found
+- Cross-origin iframes and closed shadow DOM are not supported
+- On tiled viewers, let the image load before revealing
+
+**Privacy**
+
+> Image Reveal collects no data. None. No analytics, no accounts, no tracking, and nothing is ever sent to the developer. It only runs when you ask it to, and it only contacts the site you're already on.
+
+[Privacy policy](https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md) · [Source code (MIT)](https://github.com/insylogo/image-reveal) · [Report an issue](https://github.com/insylogo/image-reveal/issues)
+
+*[IIIF]: International Image Interoperability Framework
+*[DRM]: Digital Rights Management
 ```
-
-### Plain-text version (if HTML is stripped)
-
-Use the HTML version above when possible. If the form is plain text only, use the same sections without tags.
 
 ---
 
@@ -208,10 +202,10 @@ Use with PNGs from `store-assets/screenshots/`:
 
 | File | Caption |
 |------|---------|
-| `01-nara-iiif-panel.png` | IIIF full-resolution URL revealed from National Archives Catalog tiled viewer |
-| `02-element-picker.png` | Element picker — click any layer to reveal images at that point |
-| `03-image-reveal.png` | CSS background-image URL found via right-click reveal |
-| `04-open-all-buttons.png` | Accumulated results with Open all and Download all |
+| `01-nara-iiif.png` | Full-resolution image found behind the National Archives Catalog's zoomable viewer, ready to stitch |
+| `02-openseadragon.png` | Deep Zoom image in an OpenSeadragon viewer. Stitch full res saves the complete 6960×5100 picture |
+| `03-wikimedia-great-wave.png` | Right-click Reveal images here on any page to list every image at that spot |
+| `04-open-all-download-all.png` | Reveal several images and collect them in one list, then Open all or Download all |
 
 ---
 
