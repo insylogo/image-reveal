@@ -1,4 +1,4 @@
-# Background Reveal
+# Image Reveal
 
 Browser extension that reveals image URLs hidden behind CSS backgrounds, transparent overlays, lazy-load attributes, open shadow DOM, and IIIF tiled viewers (OpenSeadragon / National Archives Catalog).
 
@@ -98,7 +98,7 @@ npm run lint:ext      # web-ext lint (after firefox build)
 
 ### Firefox (AMO)
 
-Extension ID (development): `background-reveal@local.dev` — change to a permanent ID before listing; see [`docs/STORE_SUBMISSION.md`](docs/STORE_SUBMISSION.md).
+Extension ID: `@image-reveal.insylogo` (permanent, do not change after first AMO upload); see [`docs/STORE_SUBMISSION.md`](docs/STORE_SUBMISSION.md).
 
 ```bash
 npm run sign:firefox   # requires AMO API credentials → web-ext-artifacts/*.xpi

@@ -21,7 +21,7 @@ Save PNGs here when captured:
 store-assets/screenshots/
   01-nara-iiif-panel.png      # Results panel with iiif full on catalog.archives.gov
   02-element-picker.png       # Picker highlight on a target
-  03-background-reveal.png    # CSS background-image reveal
+  03-image-reveal.png    # CSS background-image reveal
   04-open-all-buttons.png     # Panel with Open all / Download all visible
 ```
 
@@ -32,9 +32,11 @@ store-assets/screenshots/
 
 ## Listing copy (draft)
 
+**Firefox AMO (full metadata):** [`amo-listing.md`](amo-listing.md) — summary, HTML description, tags, categories, reviewer notes.
+
 ### Name
 
-Background Reveal
+Image Reveal
 
 ### Tagline / short description (≤ 132 chars for Chrome)
 
@@ -42,7 +44,7 @@ Reveal images hidden in CSS backgrounds, overlays, and IIIF tiled viewers.
 
 ### Long description
 
-Background Reveal finds image URLs that websites display without a normal “Save image” target — CSS background images, elements under transparent overlays, lazy-load data attributes, open shadow DOM, and IIIF / OpenSeadragon tiled viewers (e.g. National Archives Catalog).
+Image Reveal finds image URLs that websites display without a normal “Save image” target — CSS background images, elements under transparent overlays, lazy-load data attributes, open shadow DOM, and IIIF / OpenSeadragon tiled viewers (e.g. National Archives Catalog).
 
 **How to use**
 

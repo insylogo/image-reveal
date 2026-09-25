@@ -1,4 +1,4 @@
-# Privacy Policy — Background Reveal
+# Privacy Policy — Image Reveal
 
 **Last updated:** 2026-06-18
 
@@ -6,7 +6,7 @@
 
 ## Summary
 
-Background Reveal processes web page content locally in your browser to find image URLs. It does not collect, store, or transmit personal data to any server operated by the extension author.
+Image Reveal processes web page content locally in your browser to find image URLs. It does not collect, store, or transmit personal data to any server operated by the extension author.
 
 ## Data access
 
@@ -44,7 +44,6 @@ When you choose **Open**, **Download**, **Open all**, or **Download all**, your 
 | `downloads` | Save revealed images when you click Download |
 | `clipboardWrite` | Copy URL when you click Copy |
 | `scripting` | Clipboard fallback on restrictive pages |
-| `activeTab` | User-gesture tab access |
 
 ## Contact
 

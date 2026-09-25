@@ -110,8 +110,8 @@ test.describe('extension loaded', () => {
     });
 
     expect(panelVisible).toBe(true);
-    await page.waitForSelector('#background-reveal-panel', { timeout: 5000 });
-    const text = await page.locator('#background-reveal-panel').textContent();
+    await page.waitForSelector('#image-reveal-panel', { timeout: 5000 });
+    const text = await page.locator('#image-reveal-panel').textContent();
     expect(text).toContain('hero-bg.jpg');
   });
 });

@@ -1,6 +1,6 @@
 # Third-party notices
 
-Background Reveal (MIT) bundles the following third-party software in its
+Image Reveal (MIT) bundles the following third-party software in its
 store builds. Development-only tools (WXT, Vitest, Playwright, etc.) are **not**
 included in shipped extension packages.
 

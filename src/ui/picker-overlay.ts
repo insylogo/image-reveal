@@ -40,7 +40,7 @@ export class PickerOverlay {
   private mount(): void {
     this.root = document.createElement('div');
     this.root.id = OVERLAY_ROOT_ID;
-    this.root.setAttribute('data-background-reveal', 'picker');
+    this.root.setAttribute('data-image-reveal', 'picker');
     this.root.style.cssText = `
       position: fixed;
       inset: 0;

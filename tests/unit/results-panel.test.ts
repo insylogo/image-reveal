@@ -29,7 +29,7 @@ describe('ResultsPanel', () => {
     panel.add(result(['https://example.com/a.jpg']), (msg) => messages.push(msg));
     panel.add(result(['https://example.com/b.jpg']), (msg) => messages.push(msg));
 
-    const rows = document.querySelectorAll('#background-reveal-panel .image-row');
+    const rows = document.querySelectorAll('#image-reveal-panel .image-row');
     expect(rows).toHaveLength(2);
   });
 
@@ -37,7 +37,7 @@ describe('ResultsPanel', () => {
     panel.add(result(['https://example.com/a.jpg']), () => {});
     panel.add(result(['https://example.com/a.jpg']), () => {});
 
-    const rows = document.querySelectorAll('#background-reveal-panel .image-row');
+    const rows = document.querySelectorAll('#image-reveal-panel .image-row');
     expect(rows).toHaveLength(1);
   });
 
@@ -46,7 +46,7 @@ describe('ResultsPanel', () => {
     panel.add(result(['https://example.com/b.jpg']), (msg) => messages.push(msg));
 
     document
-      .querySelector('#background-reveal-panel [data-action="open-all"]')
+      .querySelector('#image-reveal-panel [data-action="open-all"]')
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
     expect(messages).toContainEqual({
@@ -60,7 +60,7 @@ describe('ResultsPanel', () => {
     panel.hide();
     panel.add(result(['https://example.com/b.jpg']), () => {});
 
-    const rows = document.querySelectorAll('#background-reveal-panel .image-row');
+    const rows = document.querySelectorAll('#image-reveal-panel .image-row');
     expect(rows).toHaveLength(1);
     expect(rows[0]?.getAttribute('data-image-url')).toBe('https://example.com/b.jpg');
   });
@@ -69,7 +69,7 @@ describe('ResultsPanel', () => {
     panel.add(result(['https://example.com/a.jpg']), () => {});
     panel.showActionError('https://example.com/a.jpg', 'invalid size: no comma found');
 
-    const error = document.querySelector('#background-reveal-panel .action-error');
+    const error = document.querySelector('#image-reveal-panel .action-error');
     expect(error?.textContent).toBe('invalid size: no comma found');
   });
 });

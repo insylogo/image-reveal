@@ -2,7 +2,7 @@ import type { ExtractionResult, ExtractedImage } from '../lib/types';
 import { dedupeImages, filenameFromUrl } from '../lib/url-utils';
 import type { MessageType } from '../lib/types';
 
-const PANEL_ID = 'background-reveal-panel';
+const PANEL_ID = 'image-reveal-panel';
 
 const STYLES = `
 #${PANEL_ID} {
@@ -349,7 +349,7 @@ export class ResultsPanel {
         filename: filenameFromUrl(url),
       });
     } else if (action === 'stitch-iiif') {
-      const base = row.getAttribute('data-iiif-base');
+      const base = row?.getAttribute('data-iiif-base');
       if (!base) return;
       this.onAction({ type: 'STITCH_IIIF', base, rowUrl: url });
     }
@@ -368,41 +368,53 @@ export class ResultsPanel {
       img.url.startsWith('data:') ||
       img.url.startsWith('blob:');
 
-    const thumbHtml = canPreview
-      ? `<img class="thumb" src="${escapeAttr(img.url)}" alt="" loading="lazy" />`
-      : `<div class="thumb-placeholder">?</div>`;
+    if (canPreview) {
+      const thumb = document.createElement('img');
+      thumb.className = 'thumb';
+      thumb.src = img.url;
+      thumb.alt = '';
+      thumb.loading = 'lazy';
+      row.appendChild(thumb);
+    } else {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'thumb-placeholder';
+      placeholder.textContent = '?';
+      row.appendChild(placeholder);
+    }
 
-    const stitchButton =
-      img.kind === 'iiif-full' && img.iiifBase
-        ? `<button type="button" data-action="stitch-iiif">Stitch full res</button>`
-        : '';
+    const info = document.createElement('div');
+    info.className = 'info';
 
-    row.innerHTML = `
-      ${thumbHtml}
-      <div class="info">
-        <span class="badge">${kindBadge(img.kind)}</span>
-        <div class="url" title="${escapeAttr(img.url)}">${escapeHtml(truncate(img.url))}</div>
-        <div class="actions">
-          <button type="button" data-action="open">Open</button>
-          <button type="button" data-action="copy">Copy</button>
-          <button type="button" data-action="download">Download</button>
-          ${stitchButton}
-        </div>
-      </div>
-    `;
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.textContent = kindBadge(img.kind);
+
+    const urlEl = document.createElement('div');
+    urlEl.className = 'url';
+    urlEl.title = img.url;
+    urlEl.textContent = truncate(img.url);
+
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+    const buttons: [string, string][] = [
+      ['open', 'Open'],
+      ['copy', 'Copy'],
+      ['download', 'Download'],
+    ];
+    if (img.kind === 'iiif-full' && img.iiifBase) {
+      buttons.push(['stitch-iiif', 'Stitch full res']);
+    }
+    for (const [action, label] of buttons) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('data-action', action);
+      button.textContent = label;
+      actions.appendChild(button);
+    }
+
+    info.append(badge, urlEl, actions);
+    row.appendChild(info);
 
     return row;
   }
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function escapeAttr(s: string): string {
-  return escapeHtml(s).replace(/'/g, '&#39;');
 }

@@ -32,12 +32,12 @@ test('documents firefox policies example', () => {
   const example = {
     policies: {
       ExtensionSettings: {
-        'background-reveal@local.dev': {
+        '@image-reveal.insylogo': {
           installation_mode: 'force_installed',
-          install_url: 'file:///path/to/background-reveal.xpi',
+          install_url: 'file:///path/to/image-reveal.xpi',
         },
       },
     },
   };
-  expect(example.policies.ExtensionSettings['background-reveal@local.dev']).toBeDefined();
+  expect(example.policies.ExtensionSettings['@image-reveal.insylogo']).toBeDefined();
 });

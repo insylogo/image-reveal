@@ -1,5 +1,5 @@
 /**
- * Generates Background Reveal extension icons (original artwork, MIT license).
+ * Generates Image Reveal extension icons (original artwork, MIT license).
  * Run: npm run icons
  */
 import fs from 'node:fs';
@@ -212,7 +212,7 @@ function renderIcon(size) {
 }
 
 const SVG = `<?xml version="1.0" encoding="UTF-8"?>
-<!-- Background Reveal icon — original artwork, MIT license (see public/icons/LICENSE) -->
+<!-- Image Reveal icon — original artwork, MIT license (see public/icons/LICENSE) -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <rect width="128" height="128" fill="#1e40af"/>
   <rect x="18" y="22" width="92" height="84" rx="8" fill="#e2e8f0"/>
@@ -235,7 +235,7 @@ fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, 'icon.svg'), SVG);
 fs.writeFileSync(
   path.join(outDir, 'LICENSE'),
-  `Background Reveal extension icons
+  `Image Reveal extension icons
 
 Original artwork created for this project.
 License: MIT (same as the project root LICENSE)

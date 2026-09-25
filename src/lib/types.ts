@@ -52,5 +52,5 @@ export type MessageType =
   | { type: 'STITCH_IIIF'; base: string; rowUrl: string }
   | { type: 'COPY_URL'; url: string };
 
-export const OVERLAY_ROOT_ID = 'background-reveal-root';
-export const CONTEXT_MENU_ID = 'background-reveal-here';
+export const OVERLAY_ROOT_ID = 'image-reveal-root';
+export const CONTEXT_MENU_ID = 'image-reveal-here';
