@@ -1,6 +1,8 @@
 import { OVERLAY_ROOT_ID } from './types';
 
 const MAX_SHADOW_DEPTH = 20;
+const DESCENDANT_SCAN_DEPTH = 3;
+const MEDIA_SELECTOR = 'img, picture, video, svg, object, embed';
 
 export function deepElementFromPoint(x: number, y: number): Element | null {
   let el = document.elementFromPoint(x, y);
@@ -114,6 +116,23 @@ export function getElementsAtPoint(
       host = inner;
     }
   }
+
+  // Some sites (e.g. X/Twitter) wrap media in inert containers or links so the
+  // <img> itself is never returned by elementsFromPoint. Pull in media
+  // descendants of the topmost hit elements whose box covers the point.
+  const descendantMedia: Element[] = [];
+  for (const el of stack.slice(0, DESCENDANT_SCAN_DEPTH)) {
+    if (excludeOverlay && shouldSkipElement(el)) continue;
+    for (const child of Array.from(el.querySelectorAll(MEDIA_SELECTOR))) {
+      if (seen.has(child) || (excludeOverlay && shouldSkipElement(child))) continue;
+      const rect = child.getBoundingClientRect();
+      if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+        seen.add(child);
+        descendantMedia.push(child);
+      }
+    }
+  }
+  result.unshift(...descendantMedia);
 
   const deep = deepElementFromPoint(x, y);
   if (deep && !seen.has(deep) && !(excludeOverlay && shouldSkipElement(deep))) {
