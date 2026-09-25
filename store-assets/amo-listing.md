@@ -125,8 +125,8 @@ AMO supports limited HTML (`<p>`, `<ul>`, `<li>`, `<strong>`, `<a>`, `<br>`). Pa
 
 <h3>Privacy</h3>
 <p>Runs only when <strong>you</strong> invoke it (context menu or picker). No background scanning. No analytics. No accounts. No data is sent to the developer. Image hosts are contacted only when you choose Open or Download.</p>
-<p>Privacy policy: <a href="https://github.com/insylogo/background-reveal/blob/main/PRIVACY.md">https://github.com/insylogo/background-reveal/blob/main/PRIVACY.md</a></p>
-<p>Source code: <a href="https://github.com/insylogo/background-reveal">https://github.com/insylogo/background-reveal</a> (MIT)</p>
+<p>Privacy policy: <a href="https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md">https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md</a></p>
+<p>Source code: <a href="https://github.com/insylogo/image-reveal">https://github.com/insylogo/image-reveal</a> (MIT)</p>
 ```
 
 ### Plain-text version (if HTML is stripped)
@@ -138,7 +138,7 @@ Use the HTML version above when possible. If the form is plain text only, use th
 ## Homepage
 
 ```
-https://github.com/insylogo/background-reveal
+https://github.com/insylogo/image-reveal
 ```
 
 Or your project site if you add one later.
@@ -148,7 +148,7 @@ Or your project site if you add one later.
 ## Support / issues URL
 
 ```
-https://github.com/insylogo/background-reveal/issues
+https://github.com/insylogo/image-reveal/issues
 ```
 
 ---
@@ -160,7 +160,7 @@ https://github.com/insylogo/background-reveal/issues
 Options:
 
 ```
-https://github.com/insylogo/background-reveal/blob/main/PRIVACY.md
+https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md
 ```
 
 Or GitHub Pages / your domain if you prefer a cleaner URL.
@@ -197,7 +197,7 @@ HOW TO TEST:
 2. Any site with a CSS background hero — reveal at the image area; background-image URL should appear.
 3. Open/Download from the panel exercises host access only on user click.
 
-Source: https://github.com/insylogo/background-reveal (TypeScript, readable; polyfill is standard Mozilla webextension-polyfill MPL-2.0).
+Source: https://github.com/insylogo/image-reveal (TypeScript, readable; polyfill is standard Mozilla webextension-polyfill MPL-2.0).
 ```
 
 ---

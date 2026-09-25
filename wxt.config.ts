@@ -19,7 +19,7 @@ export default defineConfig({
     description:
       'Find and save image URLs hidden in CSS backgrounds, overlays, lazy-load attributes, and tiled viewers.',
     version: '0.1.0',
-    homepage_url: 'https://github.com/insylogo/background-reveal',
+    homepage_url: 'https://github.com/insylogo/image-reveal',
     permissions: ['contextMenus', 'scripting', 'downloads', 'clipboardWrite'],
     host_permissions: ['<all_urls>'],
     ...(browser === 'firefox'

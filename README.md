@@ -1,8 +1,12 @@
 # Image Reveal
 
-Browser extension that reveals image URLs hidden behind CSS backgrounds, transparent overlays, lazy-load attributes, open shadow DOM, and IIIF tiled viewers (OpenSeadragon / National Archives Catalog).
+Browser extension that reveals image URLs hidden behind CSS backgrounds, transparent overlays, inert wrappers, lazy-load attributes, open shadow DOM, and IIIF tiled viewers (OpenSeadragon / National Archives Catalog).
 
 Works in **Firefox**, **Chrome**, and **Edge**.
+
+- Source: <https://github.com/insylogo/image-reveal>
+- Issues / support: <https://github.com/insylogo/image-reveal/issues>
+- Privacy policy: <https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md>
 
 ## Install (development)
 
@@ -40,6 +44,7 @@ The results panel lists unique image URLs with **Open**, **Copy URL**, and **Dow
 | [National Archives Catalog](https://catalog.archives.gov/) | Uses IIIF v3 tiles on a canvas, not a plain `<img>`. Open the record, **wait for the viewer to load** (pan/zoom once), then reveal. Look for an **iiif full** entry — that is the full-resolution URL. |
 | [Nationalmuseum Sweden](https://collection.nationalmuseum.se/) | Page `<img>` URLs are `.large.jpg` previews; look for **IIIF full** (~7000px) from embedded manifest data. Use **Stitch full res** to download all IIIF tiles and assemble the image when a single full URL fails. |
 | Instagram | Images often sit under transparent overlays; stack picking finds the `<img>` / largest `srcset` entry. Login walls may block some content. |
+| X / Twitter | Photos sit inside `inert` link wrappers that browsers exclude from hit-testing; the picker scans media descendants under the cursor and returns the `name=large` URL. |
 | Generic CSS hero sections | Works on `background-image`, `image-set()`, and `::before` / `::after` pseudo-elements. |
 
 ## What we support
@@ -53,6 +58,7 @@ The results panel lists unique image URLs with **Open**, **Copy URL**, and **Dow
 | `::before` / `::after` | Pseudo-element backgrounds, masks, `content: url()` |
 | CSS `mask-image` / `-webkit-mask-image` | Parsed from computed style |
 | Transparent overlays | `document.elementsFromPoint` stack at cursor |
+| Inert / non-hit-testable wrappers | Media descendants of the top hit elements whose box covers the cursor |
 | `<img>` / `<picture>` / `srcset` | `currentSrc`, largest `srcset` candidate |
 | Lazy `data-*` attrs | `data-src`, `data-background-image`, `data-bg`, etc. |
 | CSS custom properties | `--bg-image`, `--background-image`, etc. |
@@ -119,9 +125,7 @@ Chromium E2E loads the unpacked extension automatically. Firefox E2E is document
 
 ## Privacy
 
-See [PRIVACY.md](PRIVACY.md). No data collection; `<all_urls>` is used only when you invoke the extension on a page.
-
-**Store listings** require a **public HTTPS URL** to that policy — hosting the file in git is not sufficient. See [`docs/STORE_SUBMISSION.md`](docs/STORE_SUBMISSION.md).
+Image Reveal collects no user data. No analytics, no telemetry, no developer servers. Full policy: [PRIVACY.md](PRIVACY.md), published at <https://github.com/insylogo/image-reveal/blob/main/PRIVACY.md> (use this URL in store listings).
 
 ## License
 

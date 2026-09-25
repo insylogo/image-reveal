@@ -7,3 +7,5 @@ dist
 test-results
 playwright-report
 web-ext-artifacts
+SCREENSHOT_GUIDE.md 
+store-assets/screenshots/*.png 
