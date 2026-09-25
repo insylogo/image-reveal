@@ -13,6 +13,7 @@ export type ImageKind =
   | 'iiif-full'
   | 'iiif-thumb'
   | 'iiif-size'
+  | 'dzi'
   | 'blob'
   | 'data-uri';
 
@@ -25,6 +26,10 @@ export interface ExtractedImage {
   width?: number;
   height?: number;
   iiifBase?: string;
+  /** Deep Zoom descriptor URL; enables tile stitching. */
+  dziUrl?: string;
+  /** Preview image when `url` itself is not an image (e.g. a .dzi descriptor). */
+  thumbUrl?: string;
 }
 
 export interface StackLayer {
@@ -50,6 +55,7 @@ export type MessageType =
   | { type: 'DOWNLOAD_URL'; url: string; filename?: string }
   | { type: 'DOWNLOAD_ALL_URLS'; urls: string[] }
   | { type: 'STITCH_IIIF'; base: string; rowUrl: string }
+  | { type: 'STITCH_DZI'; url: string; rowUrl: string }
   | { type: 'COPY_URL'; url: string };
 
 export const OVERLAY_ROOT_ID = 'image-reveal-root';

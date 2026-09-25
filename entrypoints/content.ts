@@ -2,6 +2,7 @@ import browser from 'webextension-polyfill';
 import type { MessageType } from '../src/lib/types';
 import { downloadUrlInPageContext, openUrlInPageContext, openUrlsInPageContext } from '../src/lib/page-image-fetch';
 import { downloadStitchedIiifImage } from '../src/lib/iiif-stitch';
+import { downloadStitchedDziImage } from '../src/lib/dzi';
 import { revealAtPoint } from '../src/lib/reveal';
 import { filenameFromUrl } from '../src/lib/url-utils';
 import { PickerOverlay } from '../src/ui/picker-overlay';
@@ -74,6 +75,25 @@ export default defineContentScript({
         panel.clearActionMessage(msg.rowUrl);
         panel.showActionStatus(msg.rowUrl, 'Preparing tile download…');
         void downloadStitchedIiifImage(msg.base, ({ completed, total }) => {
+          panel.showActionStatus(msg.rowUrl, `Stitching tiles ${completed}/${total}…`);
+        })
+          .then((filename) => {
+            panel.showActionStatus(msg.rowUrl, `Saved ${filename}`);
+            window.setTimeout(() => panel.clearActionMessage(msg.rowUrl), 4000);
+          })
+          .catch((error) => {
+            panel.showActionError(
+              msg.rowUrl,
+              error instanceof Error ? error.message : 'Stitch failed',
+            );
+          });
+        return;
+      }
+
+      if (msg.type === 'STITCH_DZI') {
+        panel.clearActionMessage(msg.rowUrl);
+        panel.showActionStatus(msg.rowUrl, 'Preparing tile download…');
+        void downloadStitchedDziImage(msg.url, ({ completed, total }) => {
           panel.showActionStatus(msg.rowUrl, `Stitching tiles ${completed}/${total}…`);
         })
           .then((filename) => {

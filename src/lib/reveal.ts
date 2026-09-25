@@ -1,6 +1,7 @@
 import { extractImagesAtPoint } from './image-extractor';
 import { getElementsAtPoint } from './stack-picker';
 import { resolveIiifImagesForStack } from './iiif-resolver';
+import { resolveDziImages } from './dzi';
 import { dedupeImages } from './url-utils';
 import type { ExtractionResult } from './types';
 
@@ -15,7 +16,16 @@ export async function revealAtPoint(x: number, y: number): Promise<ExtractionRes
     // IIIF optional
   }
 
-  const merged = dedupeImages([...allImages, ...iiifImages]);
+  let dziImages: typeof allImages = [];
+  if (stack.some((el) => el.closest('.openseadragon-container'))) {
+    try {
+      dziImages = await resolveDziImages();
+    } catch {
+      // DZI optional
+    }
+  }
+
+  const merged = dedupeImages([...dziImages, ...allImages, ...iiifImages]);
 
   return {
     x,

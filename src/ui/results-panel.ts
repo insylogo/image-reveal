@@ -166,6 +166,7 @@ function truncate(url: string, max = 80): string {
 }
 
 function kindBadge(kind: string): string {
+  if (kind === 'dzi') return 'deep zoom';
   return kind.replace(/-/g, ' ');
 }
 
@@ -320,14 +321,14 @@ export class ResultsPanel {
     const action = btn.getAttribute('data-action');
 
     if (action === 'open-all') {
-      this.onAction({ type: 'OPEN_ALL_URLS', urls: this.images.map((img) => img.url) });
+      this.onAction({ type: 'OPEN_ALL_URLS', urls: this.images.filter((img) => !img.dziUrl).map((img) => img.url) });
       return;
     }
 
     if (action === 'download-all') {
       this.onAction({
         type: 'DOWNLOAD_ALL_URLS',
-        urls: this.images.map((img) => img.url),
+        urls: this.images.filter((img) => !img.dziUrl).map((img) => img.url),
       });
       return;
     }
@@ -349,6 +350,11 @@ export class ResultsPanel {
         filename: filenameFromUrl(url),
       });
     } else if (action === 'stitch-iiif') {
+      const dzi = row?.getAttribute('data-dzi-url');
+      if (dzi) {
+        this.onAction({ type: 'STITCH_DZI', url: dzi, rowUrl: url });
+        return;
+      }
       const base = row?.getAttribute('data-iiif-base');
       if (!base) return;
       this.onAction({ type: 'STITCH_IIIF', base, rowUrl: url });
@@ -362,16 +368,19 @@ export class ResultsPanel {
     if (img.iiifBase) {
       row.setAttribute('data-iiif-base', img.iiifBase);
     }
+    if (img.dziUrl) {
+      row.setAttribute('data-dzi-url', img.dziUrl);
+    }
 
     const canPreview =
       img.url.startsWith('http') ||
       img.url.startsWith('data:') ||
       img.url.startsWith('blob:');
 
-    if (canPreview) {
+    if (canPreview || img.thumbUrl) {
       const thumb = document.createElement('img');
       thumb.className = 'thumb';
-      thumb.src = img.url;
+      thumb.src = img.thumbUrl ?? img.url;
       thumb.alt = '';
       thumb.loading = 'lazy';
       row.appendChild(thumb);
@@ -396,12 +405,15 @@ export class ResultsPanel {
 
     const actions = document.createElement('div');
     actions.className = 'actions';
-    const buttons: [string, string][] = [
-      ['open', 'Open'],
-      ['copy', 'Copy'],
-      ['download', 'Download'],
-    ];
-    if (img.kind === 'iiif-full' && img.iiifBase) {
+    // A .dzi URL is an XML descriptor, not an image: only offer stitching + copy.
+    const buttons: [string, string][] = img.dziUrl
+      ? [['copy', 'Copy']]
+      : [
+          ['open', 'Open'],
+          ['copy', 'Copy'],
+          ['download', 'Download'],
+        ];
+    if ((img.kind === 'iiif-full' && img.iiifBase) || img.dziUrl) {
       buttons.push(['stitch-iiif', 'Stitch full res']);
     }
     for (const [action, label] of buttons) {

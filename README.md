@@ -44,6 +44,7 @@ The results panel lists unique image URLs with **Open**, **Copy URL**, and **Dow
 | [National Archives Catalog](https://catalog.archives.gov/) | Uses IIIF v3 tiles on a canvas, not a plain `<img>`. Open the record, **wait for the viewer to load** (pan/zoom once), then reveal. Look for an **iiif full** entry — that is the full-resolution URL. |
 | [Nationalmuseum Sweden](https://collection.nationalmuseum.se/) | Page `<img>` URLs are `.large.jpg` previews; look for **IIIF full** (~7000px) from embedded manifest data. Use **Stitch full res** to download all IIIF tiles and assemble the image when a single full URL fails. |
 | Instagram | Images often sit under transparent overlays; stack picking finds the `<img>` / largest `srcset` entry. Login walls may block some content. |
+| [OpenSeadragon demo](https://openseadragon.github.io/) | Deep Zoom (DZI) viewer. Reveal on the image, then **Stitch full res** to download the full 6960×5100 image. |
 | X / Twitter | Photos sit inside `inert` link wrappers that browsers exclude from hit-testing; the picker scans media descendants under the cursor and returns the `name=large` URL. |
 | Generic CSS hero sections | Works on `background-image`, `image-set()`, and `::before` / `::after` pseudo-elements. |
 
@@ -65,6 +66,7 @@ The results panel lists unique image URLs with **Open**, **Copy URL**, and **Dow
 | Open shadow DOM | Walks open shadow roots |
 | Blob / data URIs | Passed through |
 | IIIF / OpenSeadragon | Tile URLs from network + DOM → full-res URL (v3: `/full/max/…`, v2: `/full/{w},{h}/…`) |
+| Deep Zoom (DZI) / OpenSeadragon | `.dzi` descriptor from network, tile paths, or inline config → **Stitch full res** assembles the highest-resolution tiles into one image |
 | `<video poster>` | Poster URL |
 | Inline / linked SVG `<image>` | `href` / `xlink:href` |
 | Same-origin iframes | Best-effort DOM walk |
