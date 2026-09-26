@@ -65,7 +65,7 @@ All processing happens locally in your browser. No analytics, no accounts, no da
 
 ### Permission justification (short)
 
-`<all_urls>` is used only when you invoke the extension. It reads page styles/DOM and may fetch IIIF manifests to build full image URLs. Nothing is collected or transmitted to us.
+`<all_urls>` is used only when you invoke the extension (on Chrome it is optional and off by default, with activeTab used instead). It reads page styles/DOM and may fetch IIIF manifests to build full image URLs. Nothing is collected or transmitted to us.
 
 ### Categories
 

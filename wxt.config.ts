@@ -20,8 +20,17 @@ export default defineConfig({
       'Find and save image URLs hidden in CSS backgrounds, overlays, lazy-load attributes, and tiled viewers.',
     version: '0.1.0',
     homepage_url: 'https://github.com/insylogo/image-reveal',
-    permissions: ['contextMenus', 'scripting', 'downloads', 'clipboardWrite'],
-    host_permissions: ['<all_urls>'],
+    // Chrome: activeTab + on-demand injection, with all-sites access as an
+    // opt-in (optional) permission. Firefox keeps the always-on content script.
+    ...(browser === 'firefox'
+      ? {
+          permissions: ['contextMenus', 'scripting', 'downloads', 'clipboardWrite'],
+          host_permissions: ['<all_urls>'],
+        }
+      : {
+          permissions: ['activeTab', 'contextMenus', 'scripting', 'downloads', 'clipboardWrite'],
+          optional_host_permissions: ['<all_urls>'],
+        }),
     ...(browser === 'firefox'
       ? {
           browser_specific_settings: {

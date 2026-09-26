@@ -93,10 +93,17 @@ test.describe('extension loaded', () => {
     expect(workers.length).toBeGreaterThan(0);
   });
 
-  test('content script opens results panel via message', async ({ page, context }) => {
-    await page.goto(`${FIXTURE_BASE}/background-div.html`);
+  test('content script opens results panel via message', async ({ page, serviceWorker: sw }) => {
+    // Opt-in path: background registers the always-on script once access is granted.
+    await expect
+      .poll(() =>
+        sw.evaluate(async () =>
+          (await chrome.scripting.getRegisteredContentScripts()).map((s) => s.id),
+        ),
+      )
+      .toContain('image-reveal-all-sites');
 
-    const [sw] = context.serviceWorkers();
+    await page.goto(`${FIXTURE_BASE}/background-div.html`);
 
     const panelVisible = await sw.evaluate(async () => {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -113,5 +120,40 @@ test.describe('extension loaded', () => {
     await page.waitForSelector('#image-reveal-panel', { timeout: 5000 });
     const text = await page.locator('#image-reveal-panel').textContent();
     expect(text).toContain('hero-bg.jpg');
+  });
+
+  test('on-demand injection starts picker and ignores double injection', async ({ page, serviceWorker: sw }) => {
+    await expect
+      .poll(() => sw.evaluate(async () => (await chrome.scripting.getRegisteredContentScripts()).length))
+      .toBeGreaterThan(0);
+    // Drop the registered script so the page loads without it, like a
+    // default (activeTab-only) install.
+    await sw.evaluate(() => chrome.scripting.unregisterContentScripts());
+    await page.goto(`${FIXTURE_BASE}/background-div.html`);
+
+    const result = await sw.evaluate(async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const tabId = tab!.id!;
+      let before = 'none';
+      try {
+        before = await chrome.tabs.sendMessage(tabId, { type: 'PING' });
+      } catch {
+        before = 'none';
+      }
+      for (let i = 0; i < 2; i++) {
+        await chrome.scripting.executeScript({ target: { tabId }, files: ['content-scripts/content.js'] });
+      }
+      const after = await chrome.tabs.sendMessage(tabId, { type: 'PING' });
+      await chrome.tabs.sendMessage(tabId, { type: 'START_PICKER' });
+      return { before, after };
+    });
+
+    expect(result).toEqual({ before: 'none', after: 'PONG' });
+    await page.waitForSelector('[data-image-reveal="picker"]', { state: 'attached', timeout: 5000 });
+    await page.mouse.click(200, 100);
+    await page.waitForSelector('#image-reveal-panel', { timeout: 5000 });
+    expect(await page.locator('#image-reveal-panel').textContent()).toContain('hero-bg.jpg');
+    // Double injection must not create duplicate panels.
+    expect(await page.locator('#image-reveal-panel').count()).toBe(1);
   });
 });

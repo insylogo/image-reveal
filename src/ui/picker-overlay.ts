@@ -136,8 +136,10 @@ export class PickerOverlay {
     e.stopPropagation();
     const x = e.clientX;
     const y = e.clientY;
+    // stop() clears onSelect, so grab it first.
+    const onSelect = this.onSelect;
     this.stop();
-    this.onSelect?.(x, y);
+    onSelect?.(x, y);
   };
 
   private onKeyDown = (e: KeyboardEvent): void => {

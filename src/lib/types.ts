@@ -46,6 +46,7 @@ export interface ExtractionResult {
 }
 
 export type MessageType =
+  | { type: 'PING' }
   | { type: 'START_PICKER' }
   | { type: 'STOP_PICKER' }
   | { type: 'PICKER_ACTIVE'; active: boolean }

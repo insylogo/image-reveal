@@ -47,7 +47,8 @@ Copy/adapt this in store “notes for reviewer” / permission justification fie
 
 > **Image Reveal** helps users find image URLs that sites expose via CSS backgrounds, overlays, lazy attributes, or tiled (IIIF) viewers — not plain `<img>` tags.
 >
-> - **`host_permissions` / `<all_urls>`** — Required only when the user invokes the extension (context menu or picker). The content script reads computed styles, DOM attributes, and may fetch IIIF `info.json` for tiled viewers. No background scanning; no data sent to the extension author.
+> - **`host_permissions` / `<all_urls>`** (Firefox) / **`optional_host_permissions`** (Chrome): Firefox needs it to run the content script when the user invokes the extension. On Chrome the extension uses `activeTab` and injects on demand. All-sites access is an optional permission the user can grant from the popup for instant right-click. No background scanning; no data sent to the extension author.
+> - **`activeTab`** (Chrome) - access to the current tab after a toolbar or context-menu click.
 > - **`contextMenus`** — “Reveal images here” on right-click.
 > - **`downloads`** — User-initiated download of a revealed URL.
 > - **`clipboardWrite`** — User-initiated copy URL.
@@ -88,7 +89,7 @@ Copy/adapt this in store “notes for reviewer” / permission justification fie
 | **Package** | Same MV3 zip as Chrome |
 | **Privacy policy URL** | Required |
 | **Store listing** | Similar to Chrome; often reuse Chrome copy |
-| **Certification** | Automated + manual review; expect `<all_urls>` scrutiny |
+| **Certification** | Automated + manual review; `<all_urls>` is optional on Chromium builds (activeTab by default) |
 
 ## Documents in this repository
 

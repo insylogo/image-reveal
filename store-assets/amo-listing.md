@@ -182,7 +182,6 @@ PERMISSIONS (all user-initiated only; no background scanning):
 • downloads — save when user clicks Download
 • clipboardWrite — copy URL when user clicks Copy
 • scripting — clipboard fallback on restrictive pages
-• activeTab — user-gesture tab access
 
 DATA: manifest declares data_collection_permissions required: ["none"]. No telemetry.
 

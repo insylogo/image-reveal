@@ -9,10 +9,18 @@ import { PickerOverlay } from '../src/ui/picker-overlay';
 import { ResultsPanel } from '../src/ui/results-panel';
 
 export default defineContentScript({
-  matches: ['<all_urls>'],
+  // Empty on Chrome so WXT doesn't add <all_urls> to host_permissions.
+  matches: { firefox: ['<all_urls>'], chrome: [], edge: [] },
   runAt: 'document_idle',
+  // Chrome: injected on demand via activeTab, or registered at runtime when the
+  // user opts in to all-sites access. Firefox keeps the manifest content script.
+  registration: { chrome: 'runtime', edge: 'runtime' },
 
   main() {
+    const flagged = window as unknown as { __imageRevealLoaded?: boolean };
+    if (flagged.__imageRevealLoaded) return;
+    flagged.__imageRevealLoaded = true;
+
     const picker = new PickerOverlay();
     const panel = new ResultsPanel();
     let lastContextCoords = { x: 0, y: 0 };
@@ -119,6 +127,10 @@ export default defineContentScript({
 
     browser.runtime.onMessage.addListener((message: unknown) => {
       const msg = message as MessageType;
+      if (msg.type === 'PING') {
+        return Promise.resolve('PONG');
+      }
+
       if (msg.type === 'START_PICKER') {
         picker.start((x, y) => {
           void handleReveal(x, y);

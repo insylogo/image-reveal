@@ -36,7 +36,8 @@ Firefox listing: the manifest declares `data_collection_permissions: { required:
 
 | Permission | Purpose |
 |------------|---------|
-| Access to all websites (`<all_urls>`) | Read the page you invoke the extension on, and fetch images/IIIF metadata from that page's hosts |
+| Access to all websites (`<all_urls>`) | Firefox: read the page you invoke the extension on, and fetch images/IIIF metadata from that page's hosts. Chrome: optional, off by default. Only granted if you turn on "Instant right-click on all sites" in the popup, and can be turned off there at any time |
+| `activeTab` (Chrome only) | Temporary access to the current tab after you click the toolbar button or the right-click item, so the extension can run there without all-sites access |
 | `contextMenus` | Adds the **Reveal images here** right-click item |
 | `downloads` | Saves an image when you click **Download** |
 | `clipboardWrite` | Copies a URL when you click **Copy** |
