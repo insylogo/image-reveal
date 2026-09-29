@@ -18,7 +18,7 @@ export default defineConfig({
     short_name: 'Image Reveal',
     description:
       'Find and save image URLs hidden in CSS backgrounds, overlays, lazy-load attributes, and tiled viewers.',
-    version: '0.1.0',
+    version: '1.0.0',
     homepage_url: 'https://github.com/insylogo/image-reveal',
     // Chrome: activeTab + on-demand injection, with all-sites access as an
     // opt-in (optional) permission. Firefox keeps the always-on content script.
