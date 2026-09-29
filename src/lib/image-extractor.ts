@@ -192,15 +192,25 @@ function extractFromCssVars(el: Element, base: string): ExtractedImage[] {
   );
 }
 
-function walkOpenShadowRoots(el: Element, base: string): ExtractedImage[] {
+export type Point = { x: number; y: number };
+
+function coversPoint(el: Element, point: Point): boolean {
+  const r = el.getBoundingClientRect();
+  return point.x >= r.left && point.x <= r.right && point.y >= r.top && point.y <= r.bottom;
+}
+
+/**
+ * Looks inside this element's own open shadow root only. It used to walk the
+ * whole light-DOM subtree too, so an ancestor layer like <body> pulled in every
+ * image of every web component on the page (bing.com, reddit), and did it slowly.
+ * With a point, only shadow elements whose box covers it are kept.
+ */
+function walkOwnShadowRoot(el: Element, base: string, point?: Point): ExtractedImage[] {
   const images: ExtractedImage[] = [];
-  if (el.shadowRoot) {
-    for (const child of Array.from(el.shadowRoot.querySelectorAll('*'))) {
-      images.push(...extractImagesFromElement(child, base));
-    }
-  }
-  for (const child of Array.from(el.children)) {
-    images.push(...walkOpenShadowRoots(child, base));
+  if (!el.shadowRoot) return images;
+  for (const child of Array.from(el.shadowRoot.querySelectorAll('*'))) {
+    if (point && !coversPoint(child, point)) continue;
+    images.push(...extractImagesFromElement(child, base, point));
   }
   return images;
 }
@@ -224,6 +234,7 @@ function extractFromSameOriginIframes(base: string): ExtractedImage[] {
 export function extractImagesFromElement(
   el: Element,
   base: string = document.baseURI,
+  point?: Point,
 ): ExtractedImage[] {
   const tag = el.tagName.toLowerCase();
   let images: ExtractedImage[] = [];
@@ -239,7 +250,7 @@ export function extractImagesFromElement(
   images.push(...extractFromComputedStyle(el, base, '::after'));
   images.push(...extractFromDataAttrs(el, base));
   images.push(...extractFromCssVars(el, base));
-  images.push(...walkOpenShadowRoots(el, base));
+  images.push(...walkOwnShadowRoot(el, base, point));
 
   return dedupeImages(images.filter(Boolean));
 }
@@ -253,7 +264,7 @@ export function extractImagesAtPoint(
   const layers = stack.map((element) => ({
     element,
     tagName: element.tagName.toLowerCase(),
-    images: extractImagesFromElement(element),
+    images: extractImagesFromElement(element, document.baseURI, { x, y }),
   }));
 
   const allImages = dedupeImages(layers.flatMap((l) => l.images));

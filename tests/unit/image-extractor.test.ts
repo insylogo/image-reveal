@@ -51,4 +51,14 @@ describe('extractImagesFromElement', () => {
     const images = extractImagesFromElement(host);
     expect(images.some((i) => i.url.includes('shadow.jpg'))).toBe(true);
   });
+
+  it('does not pull shadow images from unrelated descendant components', () => {
+    const wrapper = document.createElement('div');
+    const host = document.createElement('div');
+    wrapper.appendChild(host);
+    document.body.appendChild(wrapper);
+    host.attachShadow({ mode: 'open' }).innerHTML = `<img src="https://example.com/feed-card.jpg">`;
+    const images = extractImagesFromElement(wrapper);
+    expect(images.some((i) => i.url.includes('feed-card.jpg'))).toBe(false);
+  });
 });
