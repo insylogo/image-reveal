@@ -4,15 +4,30 @@ import { CONTEXT_MENU_ID } from '../src/lib/types';
 import { filenameFromUrl } from '../src/lib/url-utils';
 import { ensureContentScript, syncAllSitesScript } from '../src/lib/inject';
 
+async function createContextMenu(): Promise<void> {
+  await browser.contextMenus.removeAll();
+  browser.contextMenus.create(
+    {
+      id: CONTEXT_MENU_ID,
+      title: 'Reveal images here',
+      contexts: ['all'],
+    },
+    // Swallow "duplicate id" if two setup calls race.
+    () => void browser.runtime.lastError,
+  );
+}
+
 export default defineBackground(() => {
+  // Chrome MV3 persists context menus, so creating them once on install is
+  // enough. Firefox's persistent MV2 background page does not: menus vanish on
+  // browser restart and on disable/enable (where onInstalled never fires), so
+  // recreate the menu every time the background page starts.
+  if (import.meta.env.FIREFOX) {
+    void createContextMenu().catch(() => undefined);
+  }
+
   browser.runtime.onInstalled.addListener(() => {
-    browser.contextMenus.removeAll().then(() => {
-      browser.contextMenus.create({
-        id: CONTEXT_MENU_ID,
-        title: 'Reveal images here',
-        contexts: ['all'],
-      });
-    });
+    void createContextMenu().catch(() => undefined);
     void syncAllSitesScript().catch(() => undefined);
   });
 

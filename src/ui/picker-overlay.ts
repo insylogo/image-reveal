@@ -107,11 +107,13 @@ export class PickerOverlay {
       return;
     }
 
+    // The overlay root is position: fixed, so children are positioned in
+    // viewport coordinates. Don't add scroll offsets.
     const rect = target.getBoundingClientRect();
     Object.assign(this.highlight.style, {
       display: 'block',
-      top: `${rect.top + window.scrollY}px`,
-      left: `${rect.left + window.scrollX}px`,
+      top: `${rect.top}px`,
+      left: `${rect.left}px`,
       width: `${rect.width}px`,
       height: `${rect.height}px`,
     });
@@ -123,10 +125,12 @@ export class PickerOverlay {
         ? `.${Array.from(target.classList).slice(0, 2).join('.')}`
         : '';
 
+    // Keep the label on screen: above the element when there's room, else inside it.
+    const labelTop = rect.top >= 22 ? rect.top - 22 : Math.max(rect.top, 0) + 2;
     Object.assign(this.label.style, {
       display: 'block',
-      top: `${rect.top + window.scrollY - 22}px`,
-      left: `${rect.left + window.scrollX}px`,
+      top: `${labelTop}px`,
+      left: `${Math.max(rect.left, 0)}px`,
     });
     this.label.textContent = `${tag}${id}${cls} · ${stack.length} layer(s)`;
   };
